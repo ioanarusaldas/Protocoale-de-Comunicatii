@@ -1,0 +1,42 @@
+Savu Ioana Rusalda 325CB
+
+In realizarea acestei teme m-am folosit de laboratorul 8. 
+Am preluat de acolo makefile-ul,helpers.h si fisierele client.c/server.c.
+
+helpers.h - am adaugat propriile structuri pentru client, mesajele tcp si udp
+si cate o structura pentru maparea(topic - clienti) + salvare mesaje in cazul
+SF = 1.
+
+
+server.c 
+
+Mi-am creat socketii udp si tcp (sockfd_tcp si sockfd_udp) si am completat
+structurile specifice.
+Am apelat funcia find, si am asculat pe socketul pasiv de tcp.
+Intr-un wile infinit am abordat cele 2 tipuri de mesaje dar si citirea de la 
+tastaura prin urmatoare conditii:
+	if (FD_ISSET(0, &tmp_fds)) -citire tastatura
+	if (i == sockfd_udp) -mesaje udp venite pe socketul specific
+	if (i == sockfd_tcp) -mesaje tcp venite pe socketul specific
+
+	In cadrul mesajelor udp mi-am completat o structura ce repezinta mesajul
+care va fi transmis catre clientii tcp. Pentru trimiterea mesjelor am 
+avut in vedere :
+		*cazul in care clientii erau conectati
+		*cazul in care clienii nu erau conectati si nu au mai avut mesaje 
+			salvate anterior
+		*cazul in care clientii au avut mesaje salvate anterior si nu erau
+			conectati
+
+	In cadrul mesajelor tcp am facut accept si am asteptat un mesaj cu id-ul
+clientului pentru a afisa mesajul de conectare
+Am verificat daca clientul are mesaje salvate pentru a le trimite si l-am 
+adaugat in vectorul de clienti conectati.
+	De asemenea, am verificat daca mesajul primit este de tip subscribe sau 
+unsubscribe pentru a actualiza map-ul (topic-clienti)
+
+
+subscriber.c
+	Intr-un while infinit am interpretat comenzile de la tastatura si mesajele
+venite de la server.
+In cadrul mesajelor udp am afisat continutul in functie de tipul de date.

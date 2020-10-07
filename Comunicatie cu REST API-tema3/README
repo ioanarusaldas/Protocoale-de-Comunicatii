@@ -1,0 +1,86 @@
+Savu Ioana Rusalda
+
+Pentru testare am folosit:
+	username: Rusalda
+	password: 11
+
+Continut:
+	-Makefile
+	-buffer.c/buffer.h
+	-helpers.c/helpers.h
+	-parson.c/parson.h - biblioteca json aleasa
+	-request.c/request.h -aici se realizeaza comenzile trimise la server
+	-client.c - aici se afala interactiuea clientului cu serverul
+	-commands.c -acici se afla functiile specifice fiecarei comenzi primite de 
+									la tastatura
+	-utils.c -aici se afla functii ajutatoare
+
+	In realizarea acestei teme am plecat de la scheletul laboratorului 10.
+La sursele deja existente am adaugat sursele necesare bibliotecii json 
+(parson.c/parson.h) si fisierele commands.c si utils.c.
+
+REQUEST.C
+	In acest fisier se afla functiile compute_get_request si 
+compute_post_request din laboratorul 10 la care am adugat informatii 
+suplimentare. De asemenea, am adaugat si functia compute_delete_request 
+specifica request-ului de tip delete.
+	In compunerea requestului am folosit functia compute_message exact ca in
+laborator. Am folosit si functiile payload_msg si register_info pe care le-am 
+atasat in fisierul  utils.c.
+	In ceea ce priveste parsarea datelor din request am folosit functiile :
+		-json_value_init_object();
+		-json_value_get_object(root);
+		-json_object_set_string
+		-json_object_set_number
+		-json_serialize_to_string_pretty
+		-json_free_serialized_string(string);
+		-json_value_free(root);
+
+UTILS.C
+	In acest fisier se regasesc urmatoarele functii:
+		-get_cookie (extrage cookie dintr-un mesaj de tip login)
+		-get_token (extrage token dintr-un mesaj de tip enter_library)
+		-isNumber (verfifica daca un string poate fi convertit la number)
+		-payload_msg (realizeaza parsarea in format json a informatiilor cartii)
+		-register_info (realizeaza parsarea informatilor de inregistare sau 
+																	conectare)
+
+CLIENT.C
+ 	char host[60] -retine hostul 
+ 	char url[100] -retine url standard la care vor fi concatenate noi cai in 
+ 					functie de comanda primita
+ 	char application[100] -retine tipul aplicatiei
+ 	int connected = 1 utilizator logat 0 altfel
+
+ 	Dupa ce am deschis conexiunea catre server,ca in laborator, cu ajutorul
+functiei open_connection intr-un while(1) am inceput citirea si interpretarea
+comenzilor de la tastatura.
+	Pentru fiecare comanda (excluzand register) am verificat daca exista user 
+conetat. Apoi am apelat functia de compunere a mesajului specifica fiecarei
+comenzi, din fisierul commands.c. Dupa trimiterea mesajului de tip request
+am receptiomat raspunsul si am verificat daca:
+		- requestul s-a executat cu succes
+		-conexiunea a expirat (in acest caz retrimit requestul)
+
+	Am afisat atat mesajult trimis cat si mesajul venit de la server.
+
+COMMANDS.C
+
+	In acest fisier se regasesc urmatoarele functii:
+		-add_command
+		-register_command
+		-login_command
+		-entry_command
+		-getBooks_command
+		-getBook_command
+		-delete_command
+		-logout_command
+		-succes response
+	Toate aceste functii prelucreaza datele primite de la tastaura si apeleaza 
+functiile din fisierul request.c pentru compunerea cererii de request.
+De asemenea, am concat la url-ul standar continuarea in functie de comanda 
+primita.
+
+	Functia succes_response verifica daca raspunsul server-ului e de succs(2xx)
+
+
