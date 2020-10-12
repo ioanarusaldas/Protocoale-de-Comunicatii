@@ -1,0 +1,27 @@
+a.	dig A single-v4.protocoale.xyz
+	dig A single.protocoale.xyz 
+	dig A multi-v4.protocoale.xyz 
+
+b.	dig AAAA single-v6.protocoale.xyz 
+	dig AAAA single.protocoale.xyz
+	dig AAAA multi-v6.protocoale.xyz
+
+c.	dig MX protocoale.xyz 
+
+d.	dig  single-v4.protocoale.xyz +noall +authority 
+	dig multi.protocoale.xyz +noall +authority 
+
+e.	dig @ns1.google.com google.com
+	dig @ns2.google.com google.com
+
+f.	dig -f bull.txt +noall +answer
+	bull - fisier cu gazde
+
+g.  dig @8.8.8.8 test.dorinel.protocoale.xyz +noall +answer +trace
+	dig -x 89.26.249.70 +noall +answer
+
+h. dig -x multi-v4.protocoale.xyz
+
+
+
+
